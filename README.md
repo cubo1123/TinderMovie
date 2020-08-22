@@ -21,7 +21,7 @@ For more resources on learning Android development, visit the
 
 ### OMDb API key
 
-TinderMovie uses the [OMDb API](http://www.omdbapi.com/) to load movies on the matching
+TinderMovie uses the [themoviedb API](https://www.themoviedb.org/) to load movies on the matching
 
 Screenshots
 -----------
