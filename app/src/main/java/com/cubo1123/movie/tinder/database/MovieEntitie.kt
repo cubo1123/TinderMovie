@@ -2,6 +2,7 @@ package com.cubo1123.movie.tinder.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.cubo1123.movie.tinder.domain.MovieProfile
 
 @Entity
 data class Movie constructor(
@@ -31,6 +32,20 @@ data class Movie constructor(
     val voteCount : Int,
     val isMatch : Boolean? = null
 )
+
+fun List<Movie>.asDomainModel() : List<MovieProfile> {
+    return map {
+        MovieProfile(id = it.id,
+                posterUrl = it.posterUrl,
+                isRType = it.isRType,
+                language = it.language,
+                title = it.title,
+                voteAverage = it.voteAverage,
+                overview = it.overview,
+                popularity = it.popularity,
+                isMatch = it.isMatch)
+    }
+}
 
 @Dao
 interface MovieDao{
