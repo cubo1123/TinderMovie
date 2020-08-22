@@ -49,5 +49,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
+    implementation "com.jakewharton.timber:timber:$version_timber"
+
 
 }
