@@ -12,7 +12,7 @@ private val moshi = Moshi.Builder()
 
 object Network{
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/")
+        .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()

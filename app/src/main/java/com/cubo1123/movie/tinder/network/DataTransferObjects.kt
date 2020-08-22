@@ -1,5 +1,6 @@
 package com.cubo1123.movie.tinder.network
 
+import com.cubo1123.movie.tinder.database.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -8,7 +9,6 @@ data class ListMovieContainer(val page : String,val results: List<MovieObject>,@
 
 @JsonClass(generateAdapter = true)
 data class MovieObject(val id: Int,
-                       val name : Float,
                        @Json(name = "video")
                        val hasVideo : Boolean,
                        @Json(name = "poster_path")
@@ -32,3 +32,19 @@ data class MovieObject(val id: Int,
                        @Json(name = "vote_count")
                        val voteCount : Int)
 
+fun ListMovieContainer.asDataBaseModel() : Array<Movie>{
+    return results.map {
+        Movie(id = it.id,
+                hasVideo = it.hasVideo,
+                posterUrl = it.posterUrl,
+                isRType = it.isRType,
+                backdropUrl = it.backdropUrl,
+                language = it.language,
+                title = it.title,
+                voteAverage = it.voteAverage,
+                overview = it.overview,
+                releaseDate = it.releaseDate,
+                popularity = it.popularity,
+                voteCount = it.voteCount)
+    }.toTypedArray()
+}

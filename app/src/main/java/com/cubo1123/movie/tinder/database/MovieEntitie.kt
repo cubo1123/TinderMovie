@@ -7,7 +7,6 @@ import androidx.room.*
 data class Movie constructor(
     @PrimaryKey
     val id: Int,
-    val name : Float,
     @ColumnInfo(name = "video")
     val hasVideo : Boolean,
     @ColumnInfo(name = "poster_path")
@@ -20,8 +19,8 @@ data class Movie constructor(
     val language : String,
     @ColumnInfo(name = "original_title")
     val title : String,
-    @ColumnInfo(name = "genre_ids")
-    val genderId : List<Int>,
+//    @ColumnInfo(name = "genre_ids")
+//    val genderId : List<Int>,
     @ColumnInfo(name = "vote_average")
     val voteAverage : Double,
     val overview : String,
@@ -37,4 +36,7 @@ data class Movie constructor(
 interface MovieDao{
     @Query("select * from movie where isMatch")
     fun getMyMovies() : LiveData<List<Movie>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertAll(vararg movies : Movie)
 }
