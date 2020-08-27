@@ -26,9 +26,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true
     }
+
 
     buildTypes {
         release {
@@ -62,6 +63,8 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
     implementation "androidx.room:room-runtime:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
+    implementation "com.yuyakaido.android:card-stack-view:${version_cardStack}"
+    implementation "androidx.fragment:fragment-ktx:$version_fragment_ktx"
     implementation "com.jakewharton.timber:timber:$version_timber"
 
 

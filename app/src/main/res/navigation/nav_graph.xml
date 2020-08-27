@@ -6,5 +6,13 @@
     <fragment
         android:id="@+id/pickerFragment"
         android:name="com.cubo1123.movie.tinder.ui.PickerFragment"
-        android:label="PickerFragment" />
+        android:label="PickerFragment" >
+        <action
+            android:id="@+id/action_pickerFragment_to_matchFragment2"
+            app:destination="@id/matchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/matchFragment"
+        android:name="com.cubo1123.movie.tinder.ui.MatchFragment"
+        android:label="MatchFragment" />
 </navigation>

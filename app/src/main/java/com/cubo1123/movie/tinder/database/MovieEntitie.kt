@@ -30,7 +30,7 @@ data class Movie constructor(
     val popularity : Double,
     @ColumnInfo(name = "vote_count")
     val voteCount : Int,
-    val isMatch : Boolean? = null
+    val isMatch : Boolean = false
 )
 
 fun List<Movie>.asDomainModel() : List<MovieProfile> {
@@ -49,9 +49,9 @@ fun List<Movie>.asDomainModel() : List<MovieProfile> {
 
 @Dao
 interface MovieDao{
-    @Query("select * from movie where isMatch")
+    @Query("select * from movie")
     fun getMyMovies() : LiveData<List<Movie>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg movies : Movie)
 }

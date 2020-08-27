@@ -2,14 +2,18 @@ package com.cubo1123.movie.tinder.domain
 
 import androidx.room.ColumnInfo
 
-data class MovieProfile(val id: Int,
-                        val posterUrl : String?,
-                        val isRType : Boolean,
-                        val language : String,
-                        val title : String,
+data class MovieProfile(val id: Int = -1,
+                        val posterUrl : String? = "",
+                        val isRType : Boolean = false,
+                        val language : String = "",
+                        val title : String = "",
                         //    @ColumnInfo(name = "genre_ids")
                         //    val genderId : List<Int>,
-                        val voteAverage : Double,
-                        val overview : String,
-                        val popularity : Double,
-                        val isMatch : Boolean? = null)
+                        val voteAverage : Double = 0.0,
+                        val overview : String = "",
+                        val popularity : Double = 0.0,
+                        val isMatch : Boolean = false)
+
+fun List<MovieProfile>.myMovies(): List<MovieProfile> {
+    return this.filter { it.isMatch }
+}

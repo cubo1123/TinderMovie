@@ -18,6 +18,8 @@ buildscript {
         version_recyclerview = "1.1.0"
         version_room = "2.2.5"
         version_timber = "4.7.1"
+        version_fragment_ktx = "1.2.5"
+        version_cardStack = "2.3.4"
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"

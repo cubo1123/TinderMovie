@@ -10,6 +10,7 @@ import com.cubo1123.movie.tinder.network.Network.networkService
 import com.cubo1123.movie.tinder.network.asDataBaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class MoviesRepository (private val database: MoviesDatabase) {
 
@@ -20,6 +21,7 @@ class MoviesRepository (private val database: MoviesDatabase) {
     suspend fun refreshMovies(){
         withContext(Dispatchers.IO){
             val recentMovies = networkService.getPopularMoviesAsync().await()
+            Timber.d(recentMovies.toString())
             database.movieDao.insertAll(*recentMovies.asDataBaseModel())
         }
     }
