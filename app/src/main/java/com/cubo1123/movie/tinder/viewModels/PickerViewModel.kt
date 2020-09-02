@@ -26,6 +26,7 @@ class PickerViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         viewModelScope.launch {
+            moviesRepository.refreshGenders()
             moviesRepository.refreshMovies()
         }
     }

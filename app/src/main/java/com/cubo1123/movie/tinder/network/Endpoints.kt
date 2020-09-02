@@ -10,4 +10,6 @@ interface Endpoints{
     @GET("movie/popular")
     fun getPopularMoviesAsync(@Query("api_key") order : String = "82a657d3fae0a016706fe4f2f85a514f"): Deferred<ListMovieContainer>
 
+    @GET("genre/movie/list")
+    fun getGenderAsync(@Query("api_key") order : String = "82a657d3fae0a016706fe4f2f85a514f"): Deferred<ListGenders>
 }

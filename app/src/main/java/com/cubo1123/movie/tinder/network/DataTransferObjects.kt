@@ -1,8 +1,10 @@
 package com.cubo1123.movie.tinder.network
 
+import com.cubo1123.movie.tinder.database.GendersMovieCrossRef
 import com.cubo1123.movie.tinder.database.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.cubo1123.movie.tinder.database.Gender as GenderEntity
 
 @JsonClass(generateAdapter = true)
 data class ListMovieContainer(val page : String,val results: List<MovieObject>,@Json(name = "total_results")val totalResults : Int, @Json(name = "total_pages")val totalPages : Int)
@@ -22,7 +24,7 @@ data class MovieObject(val id: Int,
                        @Json(name = "original_title")
                        val title : String,
                        @Json(name = "genre_ids")
-                       val genderId : List<Int>,
+                       val genders : List<Int>,
                        @Json(name = "vote_average")
                        val voteAverage : Double,
                        val overview : String,
@@ -32,9 +34,16 @@ data class MovieObject(val id: Int,
                        @Json(name = "vote_count")
                        val voteCount : Int)
 
+@JsonClass(generateAdapter = true)
+data class Gender(val id: Int,val name : String)
+
+@JsonClass(generateAdapter = true)
+data class ListGenders(@Json(name = "genres") val genders: List<Gender>)
+
+
 fun ListMovieContainer.asDataBaseModel() : Array<Movie>{
     return results.map {
-        Movie(id = it.id,
+        Movie(movieId = it.id,
                 hasVideo = it.hasVideo,
                 posterUrl = it.posterUrl,
                 isRType = it.isRType,
@@ -45,6 +54,19 @@ fun ListMovieContainer.asDataBaseModel() : Array<Movie>{
                 overview = it.overview,
                 releaseDate = it.releaseDate,
                 popularity = it.popularity,
-                voteCount = it.voteCount)
+                voteCount = it.voteCount
+        )
+    }.toTypedArray()
+}
+
+fun List<Int>.asGenderReference(movie: Int): Array<GendersMovieCrossRef>{
+    return map {
+        GendersMovieCrossRef(movieId = movie,genderId = it)
+    }.toTypedArray()
+}
+
+fun ListGenders.asDataBaseModel() : Array<GenderEntity>{
+    return genders.map {
+        GenderEntity(genderId = it.id,name = it.name)
     }.toTypedArray()
 }

@@ -14,5 +14,13 @@
     <fragment
         android:id="@+id/matchFragment"
         android:name="com.cubo1123.movie.tinder.ui.MatchFragment"
-        android:label="MatchFragment" />
+        android:label="MatchFragment" >
+        <action
+            android:id="@+id/action_matchFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.cubo1123.movie.tinder.ui.ProfileFragment"
+        android:label="ProfileFragment" />
 </navigation>

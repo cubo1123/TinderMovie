@@ -2,21 +2,14 @@ package com.cubo1123.movie.tinder.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.cubo1123.movie.tinder.R
 import com.cubo1123.movie.tinder.adapters.SwipeCardAdapter
@@ -31,11 +24,12 @@ class PickerFragment : Fragment(), CardStackListener {
 
     private lateinit var binding: FragmentPickerBinding
     private lateinit var adapter: SwipeCardAdapter
-    private val manager by lazy { CardStackLayoutManager(this.context,this) }
+    private lateinit var manager : CardStackLayoutManager
     private val viewModel: PickerViewModel by lazy {
         val activity = requireNotNull(this.activity)
         ViewModelProvider(this, PickerViewModel.Factory(activity.application)).get(PickerViewModel::class.java)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +37,7 @@ class PickerFragment : Fragment(), CardStackListener {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_picker,container,false)
         binding.lifecycleOwner = this
+        manager = CardStackLayoutManager(context,this)
         manager.setStackFrom(StackFrom.None)
         manager.setVisibleCount(3)
         manager.setTranslationInterval(8.0f)
@@ -54,12 +49,12 @@ class PickerFragment : Fragment(), CardStackListener {
         manager.setCanScrollVertical(true)
         manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
         manager.setOverlayInterpolator(LinearInterpolator())
-        if(binding.swipeCard.layoutManager == null){
-            binding.swipeCard.layoutManager = manager
-        }
-        adapter = SwipeCardAdapter(SwipeCardAdapter.PickerProfileListener { item ->
 
+        binding.swipeCard.layoutManager = manager
+        adapter = SwipeCardAdapter(SwipeCardAdapter.PickerProfileListener { item ->
+            Timber.d(item.toString())
         })
+
         binding.swipeCard.adapter = adapter
         binding.swipeCard.itemAnimator.apply {
             if (this is DefaultItemAnimator) {
@@ -72,17 +67,13 @@ class PickerFragment : Fragment(), CardStackListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.movies.observe(viewLifecycleOwner, Observer<List<MovieProfile>>{
-            Timber.d("repositorio actualizado")
+            Timber.d("data")
+            Timber.d(it.toString())
             adapter.submitList(it)
 
         })
-        getDatabase(this.requireContext()).movieDao.getMyMovies().observe(viewLifecycleOwner,
-            Observer {
-                Timber.d("data modificada")
-                Timber.d(it.toString())
-            })
-
     }
+
     override fun onCardDragging(direction: Direction, ratio: Float) {
         Timber.d("CardStackViewonCardDragging: d = ${direction.name}, r = $ratio")
     }
