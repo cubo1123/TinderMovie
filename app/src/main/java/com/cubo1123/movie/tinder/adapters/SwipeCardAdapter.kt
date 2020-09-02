@@ -29,6 +29,9 @@ class SwipeCardAdapter(private val clickListener: PickerProfileListener) : ListA
             Glide.with(binding.itemImage)
                 .load("https://image.tmdb.org/t/p/original"+item.posterUrl)
                 .into(binding.itemImage)
+            itemView.setOnClickListener{
+                clickListener.onClick(item)
+            }
         }
 
         companion object {

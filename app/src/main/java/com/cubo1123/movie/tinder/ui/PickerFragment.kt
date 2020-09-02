@@ -53,7 +53,6 @@ class PickerFragment : Fragment(), CardStackListener {
         adapter = SwipeCardAdapter(SwipeCardAdapter.PickerProfileListener { item ->
             Timber.d(item.toString())
         })
-
         binding.swipeCard.adapter = adapter
         binding.swipeCard.itemAnimator.apply {
             if (this is DefaultItemAnimator) {

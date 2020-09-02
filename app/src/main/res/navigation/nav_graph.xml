@@ -8,8 +8,14 @@
         android:name="com.cubo1123.movie.tinder.ui.PickerFragment"
         android:label="PickerFragment" >
         <action
-            android:id="@+id/action_pickerFragment_to_matchFragment2"
+            android:id="@+id/action_pickerFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_pickerFragment_to_matchFragment"
             app:destination="@id/matchFragment" />
+        <action
+            android:id="@+id/action_pickerFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/matchFragment"
@@ -22,5 +28,13 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.cubo1123.movie.tinder.ui.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.cubo1123.movie.tinder.ui.AboutFragment"
+        android:label="AboutFragment" />
 </navigation>
