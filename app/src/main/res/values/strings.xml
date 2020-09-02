@@ -3,4 +3,5 @@
     <string name="liked">Me gusta</string>
     <string name="about">About</string>
     <string name="match">Matchs</string>
+    <string name="saved_page">saved_page</string>
 </resources>

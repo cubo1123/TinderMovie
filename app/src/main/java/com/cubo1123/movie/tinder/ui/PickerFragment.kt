@@ -1,6 +1,8 @@
 package com.cubo1123.movie.tinder.ui
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.cubo1123.movie.tinder.R
 import com.cubo1123.movie.tinder.adapters.SwipeCardAdapter
-import com.cubo1123.movie.tinder.database.getDatabase
 import com.cubo1123.movie.tinder.databinding.FragmentPickerBinding
 import com.cubo1123.movie.tinder.domain.MovieProfile
 import com.cubo1123.movie.tinder.viewModels.PickerViewModel
@@ -38,7 +39,6 @@ class PickerFragment : Fragment(), CardStackListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_picker,container,false)
         binding.lifecycleOwner = this
         manager = CardStackLayoutManager(context,this)
-        manager.setStackFrom(StackFrom.None)
         manager.setVisibleCount(3)
         manager.setTranslationInterval(8.0f)
         manager.setScaleInterval(0.95f)
@@ -49,7 +49,6 @@ class PickerFragment : Fragment(), CardStackListener {
         manager.setCanScrollVertical(true)
         manager.setSwipeableMethod(SwipeableMethod.AutomaticAndManual)
         manager.setOverlayInterpolator(LinearInterpolator())
-
         binding.swipeCard.layoutManager = manager
         adapter = SwipeCardAdapter(SwipeCardAdapter.PickerProfileListener { item ->
             Timber.d(item.toString())
@@ -67,9 +66,15 @@ class PickerFragment : Fragment(), CardStackListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.movies.observe(viewLifecycleOwner, Observer<List<MovieProfile>>{
-            Timber.d("data")
-            Timber.d(it.toString())
-            adapter.submitList(it)
+            if (viewModel.newData){
+                adapter.submitList(it)
+                viewModel.updatingComplete()
+            }
+
+            if (it.size <= 5){
+                viewModel.updatePage()
+                viewModel.updateRepository()
+            }
 
         })
     }
@@ -79,33 +84,24 @@ class PickerFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardSwiped(direction: Direction) {
-        Timber.d("CardStackViewonCardSwiped: p = ${manager.topPosition}, d = $direction")
-        if (manager.topPosition == adapter.itemCount - 5) {
-            //paginate()
+        if (direction == Direction.Right){
+            viewModel.matched()
+        }else if (direction == Direction.Left){
+            viewModel.notMatched()
         }
     }
-
-//    private fun paginate() {
-//        val old = adapter.profiles
-//        val new = old.plus(createSpots())
-//        val callback = SpotDiffCallback(old, new)
-//        val result = DiffUtil.calculateDiff(callback)
-//        adapter.setSpots(new)
-//        result.dispatchUpdatesTo(adapter)
-//    }
 
     override fun onCardCanceled() {
         Timber.d("Canceled")
     }
 
     override fun onCardAppeared(view: View, position: Int) {
-        val textView = view.findViewById<TextView>(R.id.item_name)
-        Timber.d("CardStackViewonCardAppeared: ($position) ${textView.text}")
+        Timber.d("Card appear")
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
-        val textView = view.findViewById<TextView>(R.id.item_name)
-        Timber.d("CardStackViewonCardDisappeared: ($position) ${textView.text}")
+        Timber.d("ESTO DESAPARECIO")
+        viewModel.movieToUpdate = adapter.currentList[position]
     }
 
     override fun onCardRewound() {

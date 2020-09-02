@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(entities = [Movie::class,Gender::class,GendersMovieCrossRef::class],version = 1,exportSchema = false)
-//@TypeConverters(Converters::class)
+@TypeConverters(Converters::class)
 abstract class MoviesDatabase : RoomDatabase(){
     abstract val movieDao: MovieDao
 }

@@ -29,8 +29,10 @@ data class Movie constructor(
     val popularity : Double,
     @ColumnInfo(name = "vote_count")
     val voteCount : Int,
-    val isMatch : Boolean = false
+    var isMatch : MovieStatus = MovieStatus.WAITING
 )
+
+    enum class MovieStatus{MATCH,NOT_MATCHED,WAITING}
 
     @Entity
     data class Gender(
@@ -55,21 +57,6 @@ data class Movie constructor(
         val genders: List<Gender>
     )
 
-//fun List<Movie>.asDomainModel() : List<MovieProfile> {
-//    return map {
-//        MovieProfile(id = it.movieId,
-//                posterUrl = it.posterUrl,
-//                isRType = it.isRType,
-//                language = it.language,
-//                title = it.title,
-//                voteAverage = it.voteAverage,
-//                overview = it.overview,
-//                popularity = it.popularity,
-//                isMatch = it.isMatch
-//            )
-//    }
-//}
-
 fun List<MovieWithGenders>.asDomainModel() : List<MovieProfile> {
     return map {
         MovieProfile(id = it.movie.movieId,
@@ -87,19 +74,27 @@ fun List<MovieWithGenders>.asDomainModel() : List<MovieProfile> {
 }
 @Dao
 interface MovieDao{
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAllMovie(vararg movies : Movie)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAllGenders(vararg gender : Gender)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertGenderReference(vararg gender : GendersMovieCrossRef)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertAllGenderReference(vararg gender : GendersMovieCrossRef)
 
     @Transaction
-    @Query("SELECT * FROM movie where isMatch = 0")
-    fun getMoviesWithGender(): LiveData<List<MovieWithGenders>>
+    @Query("SELECT * FROM movie where isMatch = 'WAITING' ")
+    fun getMovies(): LiveData<List<MovieWithGenders>>
 
+    @Transaction
+    @Query("SELECT * FROM movie where isMatch = 'MATCH'")
+    fun getMyMovies(): LiveData<List<MovieWithGenders>>
 
+    @Query("UPDATE movie SET isMatch = :status WHERE movieId = :id")
+    fun updateMovie(status: MovieStatus,id:Int)
+
+    @Query("SELECT * from movie where movieId = :id")
+    fun getMovie(id:Int) : Movie
 
 }

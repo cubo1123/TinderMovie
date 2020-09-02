@@ -8,26 +8,9 @@ import java.lang.reflect.Type
 
 
 class Converters {
-//    @TypeConverter
-//    fun listToJson(value: List<Gender>): String? {
-//        val moshi = Moshi.Builder().build()
-//        val listOfCardsType: Type = Types.newParameterizedType(
-//            List::class.java,
-//            Gender::class.java
-//        )
-//        val adapter: JsonAdapter<List<Gender>> = moshi.adapter<List<Gender>>(listOfCardsType)
-//        return adapter.toJson(value)
-//    }
-//
-//    @TypeConverter
-//    fun jsonToList(value: String): List<Gender>? {
-//        val moshi = Moshi.Builder().build()
-//        val listOfCardsType: Type = Types.newParameterizedType(
-//            List::class.java,
-//            Gender::class.java
-//        )
-//        val adapter: JsonAdapter<List<Gender>> = moshi.adapter<List<Gender>>(listOfCardsType)
-//        val json : List<Gender>? = adapter.fromJson(value)
-//        return json
-//    }
+    @TypeConverter
+    fun toMovieStatus(value: String) = enumValueOf<MovieStatus>(value)
+
+    @TypeConverter
+    fun fromMovieStatus(value: MovieStatus) = value.name
 }
