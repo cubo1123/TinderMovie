@@ -20,10 +20,12 @@ buildscript {
         version_timber = "4.7.1"
         version_fragment_ktx = "1.2.5"
         version_cardStack = "2.3.4"
+        nav_version = "2.3.0"
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
     }
 
 }

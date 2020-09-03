@@ -12,6 +12,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.cubo1123.movie.tinder.R
 import com.cubo1123.movie.tinder.adapters.SwipeCardAdapter
@@ -36,6 +38,7 @@ class PickerFragment : Fragment(), CardStackListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Timber.d("onCReateView")
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_picker,container,false)
         binding.lifecycleOwner = this
         manager = CardStackLayoutManager(context,this)
@@ -51,7 +54,8 @@ class PickerFragment : Fragment(), CardStackListener {
         manager.setOverlayInterpolator(LinearInterpolator())
         binding.swipeCard.layoutManager = manager
         adapter = SwipeCardAdapter(SwipeCardAdapter.PickerProfileListener { item ->
-            Timber.d(item.toString())
+            this.findNavController().navigate(PickerFragmentDirections.actionPickerFragmentToProfileFragment(item))
+            adapter.notifyDataSetChanged()
         })
         binding.swipeCard.adapter = adapter
         binding.swipeCard.itemAnimator.apply {
@@ -59,11 +63,13 @@ class PickerFragment : Fragment(), CardStackListener {
                 supportsChangeAnimations = false
             }
         }
+        adapter.submitList(viewModel.movies.value)
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        Timber.d("Avtivity created")
         viewModel.movies.observe(viewLifecycleOwner, Observer<List<MovieProfile>>{
             if (viewModel.newData){
                 adapter.submitList(it)
@@ -74,7 +80,6 @@ class PickerFragment : Fragment(), CardStackListener {
                 viewModel.updatePage()
                 viewModel.updateRepository()
             }
-
         })
     }
 
@@ -99,7 +104,6 @@ class PickerFragment : Fragment(), CardStackListener {
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
-        Timber.d("ESTO DESAPARECIO")
         viewModel.movieToUpdate = adapter.currentList[position]
     }
 

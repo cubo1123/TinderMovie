@@ -74,6 +74,7 @@ class PickerViewModel(application: Application) : AndroidViewModel(application) 
             moviesRepository.notMatchedMovie(movieProfile = movieToUpdate.id)
         }
     }
+
     class Factory(private val application: Application) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(PickerViewModel::class.java)){

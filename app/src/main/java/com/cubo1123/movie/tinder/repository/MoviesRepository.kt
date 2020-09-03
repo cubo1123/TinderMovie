@@ -27,7 +27,6 @@ class MoviesRepository (private val database: MoviesDatabase) {
         withContext(Dispatchers.IO){
             try {
                 val recentMovies = networkService.getPopularMoviesAsync(page = page).await()
-                Timber.d(recentMovies.toString())
                 database.movieDao.insertAllMovie(*recentMovies.asDataBaseModel())
                 recentMovies.results.map { movie ->
                     database.movieDao.insertAllGenderReference(*movie.genders.asGenderReference(movie = movie.id))
@@ -42,16 +41,12 @@ class MoviesRepository (private val database: MoviesDatabase) {
     suspend fun matchMovie(movieProfile: Int) {
         withContext(Dispatchers.IO){
             database.movieDao.updateMovie(status = MovieStatus.MATCH,id = movieProfile)
-            val movie = database.movieDao.getMovie(movieProfile)
-            Log.e("DEBUG","pelicula ${movie.movieId} ${movie.title} actualizada ${movie.isMatch}")
         }
     }
 
     suspend fun notMatchedMovie(movieProfile: Int){
         withContext(Dispatchers.IO){
             database.movieDao.updateMovie(status = MovieStatus.NOT_MATCHED,id = movieProfile)
-            val movie = database.movieDao.getMovie(movieProfile)
-            Log.e("DEBUG","pelicula ${movie.movieId} ${movie.title} actualizada ${movie.isMatch}")
         }
     }
 
