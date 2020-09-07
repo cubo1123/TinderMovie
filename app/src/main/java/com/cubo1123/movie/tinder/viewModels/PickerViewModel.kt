@@ -45,6 +45,7 @@ class PickerViewModel(application: Application) : AndroidViewModel(application) 
             commit()
         }
     }
+
     fun updateRepository(){
         viewModelScope.launch {
             val sharedPref = context.getSharedPreferences("Tinder", Context.MODE_PRIVATE)

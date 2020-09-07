@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.cubo1123.movie.tinder.viewModels.ProfileViewModel" />
+            type="com.cubo1123.movie.tinder.viewModels.MovieProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

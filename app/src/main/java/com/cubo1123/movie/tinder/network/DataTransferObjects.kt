@@ -4,6 +4,7 @@ import com.cubo1123.movie.tinder.database.GendersMovieCrossRef
 import com.cubo1123.movie.tinder.database.Movie
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.util.*
 import com.cubo1123.movie.tinder.database.Gender as GenderEntity
 
 @JsonClass(generateAdapter = true)
@@ -33,6 +34,40 @@ data class MovieObject(val id: Int,
                        val popularity : Double,
                        @Json(name = "vote_count")
                        val voteCount : Int)
+
+@JsonClass(generateAdapter = true)
+data class CollectionObject(val id: Int, val name: String, @Json(name = "poster_path")val posterUrl: String, @Json(name = "backdrop_path")val backdropUrl: String)
+
+@JsonClass(generateAdapter = true)
+data class MovieDetailContainer(
+    val adult: Boolean,
+    @Json(name = "belongs_to_collection")
+    val collection : CollectionObject?,
+    val budget: Long,
+    val homepage: String,
+    @Json(name = "imdb_id")
+    val imdbId: String,
+    @Json(name = "production_companies")
+    val productionCompanies: List<ProductionCompanyObject>,
+    @Json(name = "production_countries")
+    val productionCountries: List<ProductionCountryObject>,
+    val revenue: Long,
+    val runtime: Int,
+    @Json(name = "spoken_languages")
+    val spokenLanguageObjects: List<LanguageObject>,
+    val status: String,
+    val tagline: String,
+    val title: String
+)
+
+@JsonClass(generateAdapter = true)
+data class ProductionCompanyObject(val id: Int, @Json(name = "logo_path") val logoUrl: String?, val name: String, @Json(name = "origin_country") val originCountry: String)
+
+@JsonClass(generateAdapter = true)
+data class ProductionCountryObject(@Json(name = "iso_3166_1")val country: String, val name: String?)
+
+@JsonClass(generateAdapter = true)
+data class LanguageObject(@Json(name = "iso_639_1")val language: String, val name: String?)
 
 @JsonClass(generateAdapter = true)
 data class Gender(val id: Int,val name : String)

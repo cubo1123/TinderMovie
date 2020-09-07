@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.cubo1123.movie.tinder.ui.ProfileFragment"
+        android:name="com.cubo1123.movie.tinder.ui.MovieProfileFragment"
         android:label="ProfileFragment" >
         <argument
             android:name="movieId"

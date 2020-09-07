@@ -1,6 +1,5 @@
 package com.cubo1123.movie.tinder.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.cubo1123.movie.tinder.database.MovieStatus
@@ -61,4 +60,18 @@ class MoviesRepository (private val database: MoviesDatabase) {
             }
         }
     }
+
+    suspend fun getMovieDetails(id : Int){
+        withContext(Dispatchers.IO){
+            try {
+                val movieDetail = networkService.getMovieAsync(movieId = id).await()
+                Timber.d("Movie data")
+                Timber.d(movieDetail.toString())
+            }catch (e : Throwable){
+                Timber.d("se hizo lo que se puso")
+                Timber.e(e)
+            }
+        }
+    }
+
 }

@@ -55,7 +55,6 @@ class PickerFragment : Fragment(), CardStackListener {
         binding.swipeCard.layoutManager = manager
         adapter = SwipeCardAdapter(SwipeCardAdapter.PickerProfileListener { item ->
             this.findNavController().navigate(PickerFragmentDirections.actionPickerFragmentToProfileFragment(item))
-            adapter.notifyDataSetChanged()
         })
         binding.swipeCard.adapter = adapter
         binding.swipeCard.itemAnimator.apply {

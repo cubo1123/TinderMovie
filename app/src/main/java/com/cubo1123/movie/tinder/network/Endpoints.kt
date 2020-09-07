@@ -1,10 +1,7 @@
 package com.cubo1123.movie.tinder.network
 
 import kotlinx.coroutines.Deferred
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Headers
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface Endpoints{
     @GET("movie/popular")
@@ -12,4 +9,7 @@ interface Endpoints{
 
     @GET("genre/movie/list")
     fun getGenderAsync(@Query("api_key") order : String = "82a657d3fae0a016706fe4f2f85a514f"): Deferred<ListGenders>
+
+    @GET("movie/{movie_id}")
+    fun getMovieAsync(@Path("movie_id") movieId:Int , @Query("api_key") order : String = "82a657d3fae0a016706fe4f2f85a514f"): Deferred<MovieDetailContainer>
 }
